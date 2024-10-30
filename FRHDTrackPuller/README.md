@@ -1,4 +1,4 @@
-# Freerider-Track-Downloader
+# FreeriderHD-Track-Downloader
 
 https://freeriderhd-track-downloader.onrender.com
 
