@@ -46,16 +46,6 @@ def fetch_data():
 
 def find_available_port(start_port=5002, max_port=5100):
     """Find an available port by incrementing from a starting port."""
-    port = start_port
-    while port <= max_port:
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            if s.connect_ex(('0.0.0.0', port)) != 0:  # Port is available
-                return port
-            port += 1
-    raise RuntimeError("No available ports in the specified range")
-
-if __name__ == '__main__':
-    # Start trying from the specified environment PORT or default to 5002
-    start_port = int(os.environ.get("PORT", 5002))
-    port = find_available_port(start_port)
+       # Use PORT environment variable for compatibility with Render
+    port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
