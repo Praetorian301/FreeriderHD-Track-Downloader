@@ -44,7 +44,7 @@ def fetch_data():
 
     return jsonify({"output": code_output})
 
-def find_available_port(start_port=5002, max_port=5100):
+
     """Find an available port by incrementing from a starting port."""
        # Use PORT environment variable for compatibility with Render
     port = int(os.environ.get("PORT", 5000))
