@@ -3,6 +3,7 @@ import json
 from flask import Flask, render_template, request, jsonify
 import requests
 import re
+import socket
 
 app = Flask(__name__)
 
@@ -43,8 +44,8 @@ def fetch_data():
 
     return jsonify({"output": code_output})
 
-
-if __name__ == "__main__":
-    # Use the PORT environment variable if set, else default to 5000
+def find_available_port(start_port=5002, max_port=5100):
+    """Find an available port by incrementing from a starting port."""
+       # Use PORT environment variable for compatibility with Render
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
