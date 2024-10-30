@@ -1,0 +1,160 @@
+/* Reset and Body Styling */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    margin: 0;
+    background: radial-gradient(circle at top, #3060b8, #3d77db, #3d89dc);
+    background-size: 400% 400%;
+    animation: gradientAnimation 6s ease infinite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Animated gradient overlay */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0));
+    animation: gradientOverlayAnimation 12s linear infinite alternate;
+    pointer-events: none;
+}
+
+/* Subtle noise overlay */
+body::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://www.transparenttextures.com/patterns/asfalt-light.png');
+    opacity: 0.04;
+    pointer-events: none;
+}
+
+/* Keyframes for gradient animation */
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Keyframes for animated overlay */
+@keyframes gradientOverlayAnimation {
+    0% { transform: scale(1) translateX(0); }
+    50% { transform: scale(1.5) translateX(-50px); }
+    100% { transform: scale(1) translateX(0); }
+}
+
+.container {
+    width: 100%;
+    max-width: 1000px;
+    padding: 2rem;
+    background-color: #ffffffe1;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.5s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+    position: relative;
+    z-index: 1; /* Ensures content is above background overlays */
+}
+
+/* Tagline Styling */
+.tagline {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 1rem;
+    font-style: italic;
+}
+
+/* Form Elements */
+input, textarea {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    transition: border-color 0.3s;
+}
+
+input:focus, textarea:focus {
+    border-color: #70e1f5;
+    outline: none;
+}
+
+textarea {
+    height: 300px;
+    resize: none;
+}
+
+/* Button Styling */
+button {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #28a745;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+/* Loading Bar Styling */
+#loading-bar {
+    display: none;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.2), #28a745, rgba(255, 255, 255, 0.2));
+    background-size: 200%;
+    animation: loading 2s linear infinite;
+    border-radius: 2px;
+}
+
+/* Footer Styling */
+footer {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+footer p {
+    margin: 0;
+}
+
+footer strong {
+    color: #28a745;
+    font-size: larger;
+}
+
+/* Keyframes for Fade and Loading Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes loading {
+    from { background-position: 200%; }
+    to { background-position: -200%; }
+}
