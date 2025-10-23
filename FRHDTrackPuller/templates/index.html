@@ -12,10 +12,19 @@
             const url = document.getElementById("freerider-url").value;
             const outputField = document.getElementById("output");
             const loadingBar = document.getElementById("loading-bar");
+            const fetchButton = document.querySelector('button[onclick="fetchData()"]');
 
-            // Show loading bar and clear previous output
+            // Validate input
+            if (!url.trim()) {
+                showNotification("Please enter a FreeRider URL", "error");
+                return;
+            }
+
+            // Show loading state
             loadingBar.style.display = "block";
             outputField.value = "";
+            fetchButton.disabled = true;
+            fetchButton.style.opacity = "0.6";
 
             try {
                 const response = await fetch("/fetch_data", {
@@ -26,38 +35,135 @@
                     body: JSON.stringify({ url })
                 });
                 const result = await response.json();
+                
                 if (result.error) {
-                    alert(result.error);
+                    showNotification(result.error, "error");
                 } else {
                     outputField.value = result.output;
+                    showNotification("Track code retrieved successfully!", "success");
                 }
             } catch (error) {
                 console.error("Error fetching data:", error);
-                alert("Failed to fetch data. Please try again.");
+                showNotification("Failed to fetch data. Please try again.", "error");
             } finally {
-                // Hide loading bar once fetching is complete
+                // Hide loading state
                 loadingBar.style.display = "none";
+                fetchButton.disabled = false;
+                fetchButton.style.opacity = "1";
             }
         }
 
         function copyToClipboard() {
             const output = document.getElementById("output");
+            
+            if (!output.value.trim()) {
+                showNotification("No track code to copy!", "error");
+                return;
+            }
+            
             output.select();
-            document.execCommand("copy");
-            alert("Output copied to clipboard!");
+            output.setSelectionRange(0, 99999); // For mobile devices
+            
+            try {
+                document.execCommand("copy");
+                showNotification("Track code copied to clipboard!", "success");
+            } catch (err) {
+                // Fallback for modern browsers
+                navigator.clipboard.writeText(output.value).then(() => {
+                    showNotification("Track code copied to clipboard!", "success");
+                }).catch(() => {
+                    showNotification("Failed to copy. Please try manually.", "error");
+                });
+            }
         }
+
+        function showNotification(message, type) {
+            // Remove existing notifications
+            const existingNotif = document.querySelector('.notification');
+            if (existingNotif) {
+                existingNotif.remove();
+            }
+
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 1rem 1.5rem;
+                background: ${type === 'success' ? 'linear-gradient(135deg, #4ade80, #22c55e)' : 'linear-gradient(135deg, #f87171, #ef4444)'};
+                color: white;
+                border-radius: 12px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                z-index: 1000;
+                font-weight: 600;
+                backdrop-filter: blur(10px);
+                animation: slideInRight 0.3s ease-out;
+                font-size: 1rem;
+            `;
+
+            document.body.appendChild(notification);
+
+            // Remove notification after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease-out';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Allow Enter key to trigger fetch
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('freerider-url').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    fetchData();
+                }
+            });
+        });
     </script>
+    
+    <style>
+        @keyframes slideInRight {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
+    </style>
 </head>
+
 <body>
     <div class="container">
-        <h1>FreeriderHD Track Downloader!</h1>
-        <input type="input" id="freerider-url" placeholder="Enter FreeRider URL" />
+        <h1>FreeRider Track Downloader</h1>
+        
+        <input type="text" id="freerider-url" placeholder="Paste your FreeRider track URL here..." />
+        
         <button onclick="fetchData()">Get Track Code</button>
+        
         <div id="loading-bar"></div>
-        <textarea id="output" readonly placeholder="Track code will appear here..."></textarea>
-        <button onclick="copyToClipboard()">Copy Output</button>
+        
+        <textarea id="output" readonly placeholder="Your track code will appear here..."></textarea>
+        
+        <button onclick="copyToClipboard()">Copy to Clipboard</button>
+        
         <footer>
-            <strong>Made by @Praetorian | Use Responsibly </strong></p>
+            <strong>Made by <a href="https://github.com/Praetorian301" target="_blank">@Praetorian</a></strong>
         </footer>
     </div>
 </body>
