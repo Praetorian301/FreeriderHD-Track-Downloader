@@ -2,7 +2,7 @@
 
 A streamlined open-source Flask web app that helps FreeRiderHD players quickly retrieve and copy raw track codes from any track URL.
 Hosted version: https://freeriderhd-track-downloader.onrender.com
- (website takes a few minutes to load)
+ (the website may take a few minutes to load)
 
 ---
 
