@@ -8,11 +8,14 @@
     <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/png">
     
     <script>
+        let fullTrackData = "";
+
         async function fetchData() {
             const url = document.getElementById("freerider-url").value;
             const outputField = document.getElementById("output");
             const loadingBar = document.getElementById("loading-bar");
             const fetchButton = document.querySelector('button[onclick="fetchData()"]');
+            const charCount = document.getElementById("char-count");
 
             // Validate input
             if (!url.trim()) {
@@ -23,6 +26,8 @@
             // Show loading state
             loadingBar.style.display = "block";
             outputField.value = "";
+            fullTrackData = "";
+            charCount.textContent = "";
             fetchButton.disabled = true;
             fetchButton.style.opacity = "0.6";
 
@@ -39,7 +44,15 @@
                 if (result.error) {
                     showNotification(result.error, "error");
                 } else {
-                    outputField.value = result.output;
+                    fullTrackData = result.output;
+                    
+                    // Display in textarea
+                    outputField.value = fullTrackData;
+                    
+                    // Show character count
+                    const length = fullTrackData.length;
+                    charCount.textContent = `Track code loaded: ${length.toLocaleString()} characters`;
+                    
                     showNotification("Track code retrieved successfully!", "success");
                 }
             } catch (error) {
@@ -54,27 +67,27 @@
         }
 
         function copyToClipboard() {
-            const output = document.getElementById("output");
-            
-            if (!output.value.trim()) {
+            if (!fullTrackData || fullTrackData.trim() === "") {
                 showNotification("No track code to copy!", "error");
                 return;
             }
             
-            output.select();
-            output.setSelectionRange(0, 99999); // For mobile devices
-            
-            try {
-                document.execCommand("copy");
-                showNotification("Track code copied to clipboard!", "success");
-            } catch (err) {
-                // Fallback for modern browsers
-                navigator.clipboard.writeText(output.value).then(() => {
-                    showNotification("Track code copied to clipboard!", "success");
-                }).catch(() => {
-                    showNotification("Failed to copy. Please try manually.", "error");
-                });
-            }
+            // Use modern clipboard API for large data
+            navigator.clipboard.writeText(fullTrackData).then(() => {
+                showNotification(`Track code copied to clipboard! (${fullTrackData.length.toLocaleString()} characters)`, "success");
+            }).catch((err) => {
+                // Fallback method
+                const output = document.getElementById("output");
+                output.select();
+                output.setSelectionRange(0, output.value.length);
+                
+                try {
+                    document.execCommand("copy");
+                    showNotification(`Track code copied to clipboard! (${fullTrackData.length.toLocaleString()} characters)`, "success");
+                } catch (e) {
+                    showNotification("Failed to copy. Try selecting the text manually.", "error");
+                }
+            });
         }
 
         function showNotification(message, type) {
@@ -102,15 +115,16 @@
                 backdrop-filter: blur(10px);
                 animation: slideInRight 0.3s ease-out;
                 font-size: 1rem;
+                max-width: 400px;
             `;
 
             document.body.appendChild(notification);
 
-            // Remove notification after 3 seconds
+            // Remove notification after 4 seconds (longer for large file notices)
             setTimeout(() => {
                 notification.style.animation = 'slideOutRight 0.3s ease-out';
                 setTimeout(() => notification.remove(), 300);
-            }, 3000);
+            }, 4000);
         }
 
         // Allow Enter key to trigger fetch
@@ -145,9 +159,15 @@
                 opacity: 0;
             }
         }
+        
+        #char-count {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
     </style>
 </head>
-
 <body>
     <div class="container">
         <h1>FreeRider Track Downloader</h1>
@@ -159,6 +179,7 @@
         <div id="loading-bar"></div>
         
         <textarea id="output" readonly placeholder="Your track code will appear here..."></textarea>
+        <div id="char-count"></div>
         
         <button onclick="copyToClipboard()">Copy to Clipboard</button>
         
