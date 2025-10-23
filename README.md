@@ -50,7 +50,7 @@ Ensures the app locates an available port to run when deployed locally.
 
 ---
 
-## 🧰 Folder Structure
+## 📂 Folder Layout
 
 ```
 FRHDTrackPuller/
