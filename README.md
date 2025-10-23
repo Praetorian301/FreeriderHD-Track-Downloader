@@ -1,7 +1,7 @@
 # FreeriderHD-Track-Downloader
 
 A streamlined open-source Flask web application designed to help **FreeRiderHD** players retrieve track data quickly and efficiently.
-Hosted version: [https://freeriderhd-track-downloader.onrender.com](https://freeriderhd-track-downloader.onrender.com)
+Hosted version link: [https://freeriderhd-track-downloader.onrender.com](https://freeriderhd-track-downloader.onrender.com) (takes a minute to load)
 
 ---
 
