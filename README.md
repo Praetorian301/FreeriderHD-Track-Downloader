@@ -1,50 +1,58 @@
-FreeriderHD-Track-Downloader
+# FreeriderHD-Track-Downloader
 
-A streamlined open-source Flask web application designed to help FreeRiderHD players retrieve track data quickly and efficiently.
-Hosted version: https://freeriderhd-track-downloader.onrender.com
+A streamlined open-source Flask web application designed to help **FreeRiderHD** players retrieve track data quickly and efficiently.
+Hosted version: [https://freeriderhd-track-downloader.onrender.com](https://freeriderhd-track-downloader.onrender.com)
 
-🧩 What this does
+---
 
-This lightweight web app extracts the unique track code from any FreeRiderHD track URL.
+## 🧩 What this does
+
+This lightweight web app extracts the unique **track code** from any FreeRiderHD track URL.
 By parsing the track ID and fetching JSON data directly from FreeRiderHD’s CDN, it allows players to easily view and copy their raw track code for editing or backup.
 
-⚙️ How it works
+---
 
-User Input:
-The web interface accepts a FreeRiderHD track URL.
+## ⚙️ How it works
 
-Track Number Extraction:
-The backend isolates the track number using a regular expression (t/(\d+)-).
+1. **User Input:**
+   The web interface accepts a FreeRiderHD track URL.
 
-Data Retrieval:
-The app constructs a CDN request URL and fetches the JSON track data.
+2. **Track Number Extraction:**
+   The backend isolates the track number using a regular expression (`t/(\d+)-`).
 
-Code Extraction:
-The JSON response is parsed to isolate the code field, which is displayed to the user.
+3. **Data Retrieval:**
+   The app constructs a CDN request URL and fetches the JSON track data.
 
-Copy Function:
-Users can copy the extracted track code directly to the clipboard.
+4. **Code Extraction:**
+   The JSON response is parsed to isolate the `code` field, which is displayed to the user.
 
-Error Handling:
-Invalid URLs or failed fetches return clean, user-friendly messages.
+5. **Copy Function:**
+   Users can copy the extracted track code directly to the clipboard.
 
-🧠 Key Functions
+6. **Error Handling:**
+   Invalid URLs or failed fetches return clean, user-friendly messages.
 
-index()
-Displays the main page (index.html) with the input field and UI layout.
+---
 
-fetch_data()
+## 🧠 Key Functions
 
-Extracts the track number from the user-provided link.
+**`index()`**
+Displays the main page (`index.html`) with the input field and UI layout.
 
-Fetches the FreeRiderHD JSON data file from the CDN.
+**`fetch_data()`**
 
-Parses and returns the code field for display.
+* Extracts the track number from the user-provided link.
+* Fetches the FreeRiderHD JSON data file from the CDN.
+* Parses and returns the `code` field for display.
 
-find_available_port() (optional utility)
+**`find_available_port()`** *(optional utility)*
 Ensures the app locates an available port to run when deployed locally.
 
-🧰 Folder Structure
+---
+
+## 🧰 Folder Structure
+
+```
 FRHDTrackPuller/
 │
 ├── static/
@@ -56,48 +64,63 @@ FRHDTrackPuller/
 │   └── index.html
 │
 └── app.py
+```
 
-🚀 Quick Start
-Local Installation
+---
 
-Install dependencies:
+## 🚀 Quick Start
 
-pip install flask requests
+### Local Installation
 
+1. Install dependencies:
 
-Run the app:
+   ```
+   pip install flask requests
+   ```
+2. Run the app:
 
-python app.py
+   ```
+   python app.py
+   ```
+3. Open your browser and visit:
 
+   ```
+   http://127.0.0.1:5000
+   ```
 
-Open your browser and visit:
+---
 
-http://127.0.0.1:5000
+## 🌐 Deployment
 
-🌐 Deployment
+This app can be easily deployed using [Render](https://render.com), [Heroku](https://heroku.com), or any Flask-compatible hosting service.
+Ensure your environment defines the `PORT` variable when deploying.
 
-This app can be easily deployed using Render
-, Heroku
-, or any Flask-compatible hosting service.
-Ensure your environment defines the PORT variable when deploying.
+---
 
-🧾 Example
+## 🧾 Example
 
-Input URL:
+**Input URL:**
 
+```
 https://www.freeriderhd.com/t/123456-sample-track
+```
 
+**Output:**
 
-Output:
-
+```
 { "code": "AAAAABBBBCCCC..." }
+```
 
-⚖️ Notes
+---
 
-This project is intended for personal use only.
+## ⚖️ Notes
 
-Use responsibly; do not redistribute copyrighted FreeRiderHD tracks.
+* This project is intended for **personal use only**.
+* Use responsibly; do not redistribute copyrighted FreeRiderHD tracks.
+* All credit for FreeRiderHD and its content belongs to the original developers.
 
-All credit for FreeRiderHD and its content belongs to the original developers.
+---
 
-Created by @Praetorian301
+*Created by [@Praetorian301](https://github.com/Praetorian301)*
+
+---
