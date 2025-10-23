@@ -1,27 +1,126 @@
-[# FreeriderHD-Track-Downloader
+# FreeriderHD-Track-Downloader
 
-https://freeriderhd-track-downloader.onrender.com
+A streamlined open-source Flask web application designed to help **FreeRiderHD** players retrieve track data quickly and efficiently.
+Hosted version: [https://freeriderhd-track-downloader.onrender.com](https://freeriderhd-track-downloader.onrender.com)
 
-Seamless FRHD track code downloader.
-](https://freeriderhd-track-downloader.onrender.com
-FreeriderHD Track Downloader is a streamlined open source Flask web application designed to help FreeRiderHD players retrieve track data quickly and efficiently. With this tool, users can input a track URL from FreeRiderHD, and the app will automatically extract and display the unique track code.
+---
 
-How It Works
+## 🧩 What this does
 
-User Input: The app interface accepts a FreeRiderHD track URL from the user.
+This lightweight web app extracts the unique **track code** from any FreeRiderHD track URL.
+By parsing the track ID and fetching JSON data directly from FreeRiderHD’s CDN, it allows players to easily view and copy their raw track code for editing or backup.
 
-Track Number Extraction: The app uses a regular expression to isolate the track number from the URL, an essential part of constructing a data link to FreeRiderHD’s servers.
+---
 
-Data Retrieval: Using the extracted track number, the app generates a URL and sends an HTTP request to FreeRiderHD to fetch the track data in JSON format.
+## ⚙️ How it works
 
-Error Handling: If the URL is invalid or data cannot be retrieved, the app provides user-friendly error messages.
+1. **User Input:**
+   The web interface accepts a FreeRiderHD track URL.
 
-Display and Copy: The app extracts the track code from the fetched data and displays it to the user, who can then easily copy it to their clipboard.
+2. **Track Number Extraction:**
+   The backend isolates the track number using a regular expression (`t/(\d+)-`).
 
-Key Functions
+3. **Data Retrieval:**
+   The app constructs a CDN request URL and fetches the JSON track data.
 
-index(): Displays the main page with an input field for the track URL.
+4. **Code Extraction:**
+   The JSON response is parsed to isolate the `code` field, which is displayed to the user.
 
-fetch_data(): Handles the URL processing and data retrieval. This function: Extracts the track number from the URL. Constructs and fetches data from the FreeRiderHD server.Parses the response, isolating the code field, and returns it for display.
+5. **Copy Function:**
+   Users can copy the extracted track code directly to the clipboard.
 
-find_available_port(start_port, max_port): Ensures the app finds an available port to run, incrementing until it finds an open one.)
+6. **Error Handling:**
+   Invalid URLs or failed fetches return clean, user-friendly messages.
+
+---
+
+## 🧠 Key Functions
+
+**`index()`**
+Displays the main page (`index.html`) with the input field and UI layout.
+
+**`fetch_data()`**
+
+* Extracts the track number from the user-provided link.
+* Fetches the FreeRiderHD JSON data file from the CDN.
+* Parses and returns the `code` field for display.
+
+**`find_available_port()`** *(optional utility)*
+Ensures the app locates an available port to run when deployed locally.
+
+---
+
+## 🧰 Folder Structure
+
+```
+FRHDTrackPuller/
+│
+├── static/
+│   ├── favicon.png
+│   ├── newLogo.png
+│   └── styles.css
+│
+├── templates/
+│   └── index.html
+│
+└── app.py
+```
+
+---
+
+## 🚀 Quick Start
+
+### Local Installation
+
+1. Install dependencies:
+
+   ```
+   pip install flask requests
+   ```
+2. Run the app:
+
+   ```
+   python app.py
+   ```
+3. Open your browser and visit:
+
+   ```
+   http://127.0.0.1:5000
+   ```
+
+---
+
+## 🌐 Deployment
+
+This app can be easily deployed using [Render](https://render.com), [Heroku](https://heroku.com), or any Flask-compatible hosting service.
+Ensure your environment defines the `PORT` variable when deploying.
+
+---
+
+## 🧾 Example
+
+**Input URL:**
+
+```
+https://www.freeriderhd.com/t/123456-sample-track
+```
+
+**Output:**
+
+```
+{ "code": "AAAAABBBBCCCC..." }
+```
+
+---
+
+## ⚖️ Notes
+
+* This project is intended for **personal use only**.
+* Use responsibly; do not redistribute copyrighted FreeRiderHD tracks.
+* All credit for FreeRiderHD and its content belongs to the original developers.
+
+---
+
+*Created by [@Praetorian301](https://github.com/Praetorian301)*
+
+---
