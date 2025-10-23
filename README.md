@@ -120,9 +120,9 @@ https://www.freeriderhd.com/t/123456-sample-track
 * All credit for FreeRiderHD and its content belongs to the original developers.
 
 ---
+
 ## 👨‍💻 Credits & Contact
 
 Created by **[@Praetorian301](https://github.com/Praetorian301)**.
-If you find bugs or want to contribute, open an issue or a pull request.
 
 ---
