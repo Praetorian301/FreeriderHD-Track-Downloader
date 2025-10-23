@@ -15,7 +15,6 @@
             const outputField = document.getElementById("output");
             const loadingBar = document.getElementById("loading-bar");
             const fetchButton = document.querySelector('button[onclick="fetchData()"]');
-            const charCount = document.getElementById("char-count");
 
             // Validate input
             if (!url.trim()) {
@@ -27,7 +26,6 @@
             loadingBar.style.display = "block";
             outputField.value = "";
             fullTrackData = "";
-            charCount.textContent = "";
             fetchButton.disabled = true;
             fetchButton.style.opacity = "0.6";
 
@@ -48,10 +46,6 @@
                     
                     // Display in textarea
                     outputField.value = fullTrackData;
-                    
-                    // Show character count
-                    const length = fullTrackData.length;
-                    charCount.textContent = `Track code loaded: ${length.toLocaleString()} characters`;
                     
                     showNotification("Track code retrieved successfully!", "success");
                 }
@@ -74,7 +68,7 @@
             
             // Use modern clipboard API for large data
             navigator.clipboard.writeText(fullTrackData).then(() => {
-                showNotification(`Track code copied to clipboard! (${fullTrackData.length.toLocaleString()} characters)`, "success");
+                showNotification("Track code copied to clipboard!", "success");
             }).catch((err) => {
                 // Fallback method
                 const output = document.getElementById("output");
@@ -83,7 +77,7 @@
                 
                 try {
                     document.execCommand("copy");
-                    showNotification(`Track code copied to clipboard! (${fullTrackData.length.toLocaleString()} characters)`, "success");
+                    showNotification("Track code copied to clipboard!", "success");
                 } catch (e) {
                     showNotification("Failed to copy. Try selecting the text manually.", "error");
                 }
@@ -120,7 +114,7 @@
 
             document.body.appendChild(notification);
 
-            // Remove notification after 4 seconds (longer for large file notices)
+            // Remove notification after 4 seconds
             setTimeout(() => {
                 notification.style.animation = 'slideOutRight 0.3s ease-out';
                 setTimeout(() => notification.remove(), 300);
@@ -159,13 +153,6 @@
                 opacity: 0;
             }
         }
-        
-        #char-count {
-            font-size: 0.9rem;
-            color: #666;
-            margin-top: 0.5rem;
-            font-weight: 500;
-        }
     </style>
 </head>
 <body>
@@ -179,7 +166,6 @@
         <div id="loading-bar"></div>
         
         <textarea id="output" readonly placeholder="Your track code will appear here..."></textarea>
-        <div id="char-count"></div>
         
         <button onclick="copyToClipboard()">Copy to Clipboard</button>
         
