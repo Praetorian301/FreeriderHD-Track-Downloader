@@ -66,7 +66,6 @@ FRHDTrackPuller/
 │
 ├── static/
 │   ├── favicon.png
-│   ├── newLogo.png
 │   └── styles.css
 │
 ├── templates/
