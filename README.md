@@ -57,9 +57,6 @@ Displays the popular tracks page (`popular.html`) with custom SVG track previews
 * Fetches the FreeRiderHD JSON data file from the CDN.
 * Parses and returns the `code` field along with statistics.
 
-**`find_available_port()`** *(optional utility)*
-Ensures the app locates an available port to run when deployed locally.
-
 ---
 
 ## 📂 Folder Layout
@@ -73,9 +70,9 @@ FRHDTrackPuller/
 │   └── styles.css
 │
 ├── templates/
-│   ├── index.html          # Main track extraction page
-│   ├── about.html          # Project information page
-│   └── popular.html        # Popular tracks browser
+│   ├── index.html          
+│   ├── about.html          
+│   └── popular.html       
 │
 ├── app.py
 └── requirements.txt
@@ -87,33 +84,17 @@ FRHDTrackPuller/
 
 ### Local Installation
 
-1. Clone the repository:
+1. Install dependencies:
 
-   ```bash
-   git clone https://github.com/Praetorian301/FreeriderHD-Track-Downloader.git
-   cd FreeriderHD-Track-Downloader
    ```
-
-2. Install dependencies:
-
-   ```bash
-   pip install -r FRHDTrackPuller/requirements.txt
-   ```
-
-   Or manually:
-
-   ```bash
    pip install flask requests
    ```
+2. Run the app:
 
-3. Run the app:
-
-   ```bash
-   cd FRHDTrackPuller
+   ```
    python app.py
    ```
-
-4. Open your browser and visit:
+3. Open your browser and visit:
 
    ```
    http://127.0.0.1:5000
@@ -124,7 +105,6 @@ FRHDTrackPuller/
 ## 🌐 Deployment
 
 This app can be easily deployed using [Render](https://render.com), [Heroku](https://heroku.com), or any Flask-compatible hosting service.
-
 Ensure your environment defines the `PORT` variable when deploying.
 
 ---
@@ -140,14 +120,10 @@ https://www.freeriderhd.com/t/123456-sample-track
 **Output:**
 
 ```
-Track Code (in textarea):
-AAAAABBBBCCCC...
-
-Statistics:
-Track ID: 123456
-Code Length: 3,700,363
-Elements: 119,452
+{ "code": "AAAAABBBBCCCC..." }
 ```
+
+---
 
 **Actions:**
 
