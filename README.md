@@ -103,8 +103,7 @@ FRHDTrackPuller/
 
 ## 🌐 Deployment
 
-This app can be easily deployed using [Render](https://render.com), [Heroku](https://heroku.com), or any Flask-compatible hosting service.
-Ensure your environment defines the `PORT` variable when deploying.
+This app can be easily deployed using [Render](https://render.com), or any Flask-compatible hosting service. Ensure your environment defines the `PORT` variable when deploying.
 
 ---
 
