@@ -1,4 +1,3 @@
-
 import os
 import json
 from flask import Flask, render_template, request, jsonify
@@ -10,14 +9,6 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     return render_template('index.html')
-
-@app.route('/about')
-def about():
-    return render_template('about.html')
-
-@app.route('/popular')
-def popular():
-    return render_template('popular.html')
 
 @app.route('/fetch_data', methods=['POST'])
 def fetch_data():
