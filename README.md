@@ -107,9 +107,17 @@ This app can be easily deployed using [Render](https://render.com), [Heroku](htt
 
 Ensure your environment defines the `PORT` variable when deploying.
 
-**Example for Render:**
-- Build Command: `pip install -r requirements.txt`
-- Start Command: `python app.py`
+**Build Command:**
+
+```
+`pip install -r requirements.txt`
+```
+
+**Start Command:**
+
+```
+`python app.py`
+```
 
 ---
 
