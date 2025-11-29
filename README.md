@@ -166,12 +166,10 @@ Browse featured and popular tracks with quick preview, copy, and download.
 
 ## 🌓 Light & Dark Themes
 
-**Light Mode**
-
+**Light Mode:**
 Clean, modern interface with floating purple and pink particle effects.
 
-**Dark Mode**
-
+**Dark Mode:**
 Elegant dark theme with enhanced particle visibility and purple accents.
 
 ---
