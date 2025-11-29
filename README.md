@@ -135,13 +135,13 @@ https://www.freeriderhd.com/t/123456-sample-track
 
 ## 🌟 Pages
 
-**Home** (`/`)
+**Home** 
 Main track downloader with code extraction, stats, and download tools.
 
-**About** (`/about`)
+**About**
 Project overview, roadmap, and future features.
 
-**Popular** (`/popular`)
+**Popular**
 Browse featured tracks with quick preview, copy, and download.
 
 ---
@@ -177,14 +177,14 @@ Elegant dark theme with enhanced particle visibility and purple accents.
   
 ---
 
-## 👨‍💻 Credits & Contact
-
-Created by **[@Praetorian301](https://github.com/Praetorian301)**.
-
----
-
 ## 📜 License
 
 Open Source, feel free to fork, modify, and use for personal projects.
+
+---
+
+## 👨‍💻 Credits & Contact
+
+Created by **[@Praetorian301](https://github.com/Praetorian301)**.
 
 ---
