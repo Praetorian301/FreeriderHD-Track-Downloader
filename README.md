@@ -103,8 +103,13 @@ FRHDTrackPuller/
 
 ## 🌐 Deployment
 
-This app can be easily deployed using [Render](https://render.com), or any Flask-compatible hosting service. 
+This app can be easily deployed using [Render](https://render.com), [Heroku](https://heroku.com), or any Flask-compatible hosting service.
+
 Ensure your environment defines the `PORT` variable when deploying.
+
+**Example for Render:**
+- Build Command: `pip install -r requirements.txt`
+- Start Command: `python app.py`
 
 ---
 
@@ -121,8 +126,6 @@ https://www.freeriderhd.com/t/123456-sample-track
 ```
 { "code": "1i 11 1i,-d 1i 3 1j g 1i,10 1i..." }
 ```
-
----
 
 **Actions:**
 
