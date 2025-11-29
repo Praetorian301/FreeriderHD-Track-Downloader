@@ -126,35 +126,24 @@ https://www.freeriderhd.com/t/123456-sample-track
 
 **Actions:**
 
-* 📋 Copy to Clipboard
-* 💾 Download as File
-* 🗑️ Clear All
+📋 Copy to Clipboard - 💾 Download as File - 🗑️ Clear All
 
 ---
 
 ## 🌟 Pages
 
-### **Home** (`/`)
+**Home** (`/`)
 Main track downloader with code extraction, stats, and download tools.
 
-### **About** (`/about`)
+**About** (`/about`)
 Project overview, roadmap, and future features.
 
-### **Popular** (`/popular`)
+**Popular** (`/popular`)
 Browse featured tracks with quick preview, copy, and download.
 
 ---
 
-## ⚖️ Notes
-
-* This project is intended for **personal use only**.
-* Use responsibly; do not redistribute copyrighted FreeRiderHD tracks.
-* All credit for FreeRiderHD and its content belongs to the original developers.
-* The UI design features modern web technologies including CSS backdrop filters, CSS gradients, and SVG graphics.
-
----
-
-## 🛠️ Technologies Used
+## 🛠️ Technologies
 
 * **Backend:** Flask (Python)
 * **Frontend:** HTML5, CSS3, Vanilla JavaScript
@@ -174,6 +163,15 @@ Clean, modern interface with floating purple and pink particle effects.
 
 Elegant dark theme with enhanced particle visibility and purple accents.
 
+---
+
+## ⚖️ Notes
+
+* This project is intended for **personal use only**.
+* Use responsibly; do not redistribute copyrighted FreeRiderHD tracks.
+* All credit for FreeRiderHD and its content belongs to the original developers.
+* The UI design features modern web technologies including CSS backdrop filters, CSS gradients, and SVG graphics.
+  
 ---
 
 ## 👨‍💻 Credits & Contact
