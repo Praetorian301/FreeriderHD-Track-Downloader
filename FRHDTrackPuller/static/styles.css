@@ -366,7 +366,7 @@ h1 {
 }
 
 .hero-content {
-    flex: 1;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -847,7 +847,7 @@ body.dark-mode .tips-section {
 
 /* Dark Mode Toggle */
 .dark-mode-toggle {
-    position: relative;
+    position: absolute;
     top: 0;
     right: 0;
     font-size: 2rem;
@@ -869,7 +869,6 @@ body.dark-mode .tips-section {
     animation: pulse 3s ease-in-out infinite;
     line-height: 1;
     padding: 0;
-    flex-shrink: 0;
 }
 
 .dark-mode-toggle:hover {
@@ -2169,13 +2168,13 @@ body.dark-mode .recent-header h3 {
 
 .track-history-item {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
     padding: 1rem;
     background: rgba(255, 255, 255, 0.5);
     border-radius: 12px;
     border: 2px solid rgba(102, 126, 234, 0.15);
     transition: all 0.3s ease;
+    gap: 0.75rem;
 }
 
 body.dark-mode .track-history-item {
@@ -2192,6 +2191,27 @@ body.dark-mode .track-history-item {
 body.dark-mode .track-history-item:hover {
     border-color: rgba(240, 147, 251, 0.4);
     box-shadow: 0 4px 12px rgba(240, 147, 251, 0.2);
+}
+
+.track-history-header {
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #667eea;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid rgba(102, 126, 234, 0.2);
+}
+
+body.dark-mode .track-history-header {
+    color: #a5b4fc;
+    border-bottom-color: rgba(240, 147, 251, 0.2);
+}
+
+.track-history-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
 }
 
 .track-history-info {
@@ -2214,6 +2234,7 @@ body.dark-mode .track-history-id {
     color: #666;
     display: flex;
     gap: 1rem;
+    flex-wrap: wrap;
 }
 
 body.dark-mode .track-history-meta {
@@ -2251,10 +2272,16 @@ body.dark-mode .track-history-meta {
 }
 
 @media (max-width: 768px) {
-    .track-history-item {
+    .track-history-content {
         flex-direction: column;
         align-items: flex-start;
         gap: 0.75rem;
+    }
+    
+    .track-history-meta {
+        width: 100%;
+        flex-direction: column;
+        gap: 0.25rem;
     }
     
     .track-history-actions {
