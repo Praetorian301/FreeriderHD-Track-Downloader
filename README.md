@@ -139,10 +139,10 @@ https://www.freeriderhd.com/t/123456-sample-track
 Main track downloader with code extraction, stats, and download tools.
 
 **About**
-Project overview, roadmap, and future features.
+Project overview, roadmap, and the future features that will be added.
 
 **Popular**
-Browse featured tracks with quick preview, copy, and download.
+Browse featured and popular tracks with quick preview, copy, and download.
 
 ---
 
