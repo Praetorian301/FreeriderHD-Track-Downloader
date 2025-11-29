@@ -144,21 +144,21 @@
                 const safeCode = track.code.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/'/g, "\\'").replace(/"/g, '&quot;');
                 
                 item.innerHTML = `
-                    <div class="track-history-info">
-                        <div class="track-history-id">Track #${track.id}</div>
+                    <div class="track-history-header">Track #${track.id}</div>
+                    <div class="track-history-content">
                         <div class="track-history-meta">
                             <span>📏 ${track.length.toLocaleString()} chars</span>
                             <span>🔢 ${track.elements.toLocaleString()} elements</span>
                             <span>🕐 ${timeAgo}</span>
                         </div>
-                    </div>
-                    <div class="track-history-actions">
-                        <button class="quick-action-btn" onclick='reloadTrack("${track.id}", ${track.id})'>
-                            📋 Copy
-                        </button>
-                        <button class="quick-action-btn download" onclick='quickDownload("${track.id}", ${track.id})'>
-                            💾 Download
-                        </button>
+                        <div class="track-history-actions">
+                            <button class="quick-action-btn" onclick='reloadTrack("${track.id}", ${track.id})'>
+                                📋 Copy
+                            </button>
+                            <button class="quick-action-btn download" onclick='quickDownload("${track.id}", ${track.id})'>
+                                💾 Download
+                            </button>
+                        </div>
                     </div>
                 `;
                 
@@ -628,15 +628,6 @@
             </div>
         </div>
         
-        <!-- Recent Tracks History -->
-        <div class="recent-tracks" id="recent-tracks" style="display: none;">
-            <div class="recent-header">
-                <h3>📜 Recent Tracks</h3>
-                <button class="clear-history-btn" onclick="clearHistory()">Clear History</button>
-            </div>
-            <div id="recent-tracks-list"></div>
-        </div>
-        
         <!-- Output Textarea -->
         <div style="position: relative;">
             <textarea id="output" readonly placeholder="Your track code will appear here..."></textarea>
@@ -651,6 +642,15 @@
         <button onclick="clearAll()" style="background: linear-gradient(135deg, #94a3b8, #64748b); margin-top: 1rem;">
             🗑️ Clear All
         </button>
+        
+        <!-- Recent Tracks History -->
+        <div class="recent-tracks" id="recent-tracks" style="display: none;">
+            <div class="recent-header">
+                <h3>📜 Recent Tracks</h3>
+                <button class="clear-history-btn" onclick="clearHistory()">Clear History</button>
+            </div>
+            <div id="recent-tracks-list"></div>
+        </div>
         
         <footer>
             <strong>
