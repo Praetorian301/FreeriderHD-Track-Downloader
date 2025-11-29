@@ -32,7 +32,7 @@ By parsing the track ID and fetching JSON data directly from FreeRiderHD’s CDN
 5. **Statistics Display:**
    Track ID, code length, and element count are calculated and displayed in an elegant stats bar.
 
-6. **Copy/Download Functions:**
+6. **Copy & Download Functions:**
    Users can either copy the extracted track code directly to the clipboard or download it as a `.txt` file.
 
 7. **Error Handling:**
@@ -134,33 +134,14 @@ https://www.freeriderhd.com/t/123456-sample-track
 
 ## 🌟 Pages
 
-### 1. **Main Page** (`/`)
+### **Home** (`/`)
+Main track downloader with code extraction, stats, and download tools.
 
-Four-step process with visual indicators:
+### **About** (`/about`)
+Project overview, roadmap, and future features.
 
-1. Paste URL
-2. Fetch Data
-3. View Code
-4. Download
-
-Features: Input field with icon, expandable textarea, statistics display, action buttons.
-
-### 2. **About Page** (`/about`)
-
-Project information including:
-
-* Development roadmap
-* Technical details
-* Future features
-
-### 3. **Popular Tracks Page** (`/popular`)
-
-Browse featured tracks with:
-
-* Custom SVG track previews
-* Track metadata (author, plays, rating)
-* Quick copy and download buttons
-* Modal view for detailed track information
+### **Popular** (`/popular`)
+Browse featured tracks with quick preview, copy, and download.
 
 ---
 
