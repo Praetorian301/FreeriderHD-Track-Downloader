@@ -10,7 +10,7 @@ A streamlined open-source Flask web application designed to help FreeRiderHD pla
 
 ## 🧩 What this does
 
-This lightweight web app extracts the unique **track code** from any FreeRiderHD track URL.
+This lightweight web app extracts the unique track code from any FreeRiderHD track URL.
 By parsing the track ID and fetching JSON data directly from FreeRiderHD’s CDN, it allows players to easily view and copy their raw track code for editing or backup.
 
 ---
@@ -143,13 +143,13 @@ https://www.freeriderhd.com/t/123456-sample-track
 
 ## 🌟 Pages
 
-**Home** 
+**Home:** 
 Main track downloader with code extraction, stats, and download tools.
 
-**About**
+**About:**
 Project overview, roadmap, and the future features that will be added.
 
-**Popular**
+**Popular:**
 Browse featured and popular tracks with quick preview, copy, and download.
 
 ---
