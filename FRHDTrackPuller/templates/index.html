@@ -7,6 +7,25 @@
     <link rel="stylesheet" href="/static/styles.css">
     <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/png">
     
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5TETZ0MZ2V"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        
+        // Configure GA4 with enhanced tracking
+        gtag('config', 'G-5TETZ0MZ2V', {
+            'send_page_view': true,
+            'anonymize_ip': false  // Set to false to see actual IPs in Analytics
+        });
+        
+        // Custom event tracking function
+        function trackEvent(eventName, eventParams = {}) {
+            gtag('event', eventName, eventParams);
+        }
+    </script>
+    
     <script>
         let fullTrackData = "";
         let currentTrackNumber = "";
@@ -21,6 +40,13 @@
             const toggle = document.querySelector('.dark-mode-toggle');
             toggle.textContent = isDark ? '☀️' : '🌙';
             toggle.setAttribute('title', isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode');
+            
+            // Track dark mode toggle in Google Analytics
+            if (typeof trackEvent === 'function') {
+                trackEvent('dark_mode_toggled', {
+                    mode: isDark ? 'dark' : 'light'
+                });
+            }
         }
 
         // Update step indicator
@@ -35,15 +61,22 @@
             });
         }
 
-        // Load dark mode preference
+        // Load dark mode preference (default is dark)
         document.addEventListener('DOMContentLoaded', () => {
-            const darkMode = localStorage.getItem('darkMode') === 'true';
-            if (darkMode) {
-                document.body.classList.add('dark-mode');
+            // Dark mode is now the default - only switch to light if explicitly saved
+            const darkMode = localStorage.getItem('darkMode');
+            
+            if (darkMode === 'false') {
+                // User explicitly chose light mode
+                document.body.classList.remove('dark-mode');
                 const toggle = document.querySelector('.dark-mode-toggle');
-                toggle.textContent = '☀️';
-                toggle.setAttribute('title', 'Switch to Light Mode');
+                toggle.textContent = '🌙';
+                toggle.setAttribute('title', 'Switch to Dark Mode');
             }
+            // Otherwise stay in dark mode (default)
+            
+            // Load track history
+            loadTrackHistory();
             
             // Enter key support
             document.getElementById('freerider-url').addEventListener('keypress', (e) => {
@@ -60,6 +93,212 @@
                     updateStepIndicator(0);
                 }
             });
+        });
+
+        // ========================================
+        // TRACK HISTORY MANAGEMENT
+        // ========================================
+        
+        function saveToHistory(trackId, trackCode) {
+            let history = JSON.parse(localStorage.getItem('trackHistory') || '[]');
+            
+            // Check if track already exists
+            history = history.filter(item => item.id !== trackId);
+            
+            // Add new track to beginning
+            history.unshift({
+                id: trackId,
+                code: trackCode,
+                length: trackCode.length,
+                elements: (trackCode.match(/,/g) || []).length + 1,
+                timestamp: Date.now()
+            });
+            
+            // Keep only last 10 tracks
+            history = history.slice(0, 10);
+            
+            localStorage.setItem('trackHistory', JSON.stringify(history));
+            loadTrackHistory();
+        }
+
+        function loadTrackHistory() {
+            const history = JSON.parse(localStorage.getItem('trackHistory') || '[]');
+            const container = document.getElementById('recent-tracks');
+            const listContainer = document.getElementById('recent-tracks-list');
+            
+            if (history.length === 0) {
+                container.style.display = 'none';
+                return;
+            }
+            
+            container.style.display = 'block';
+            listContainer.innerHTML = '';
+            
+            history.forEach(track => {
+                const item = document.createElement('div');
+                item.className = 'track-history-item';
+                
+                const timeAgo = getTimeAgo(track.timestamp);
+                
+                // Escape backticks and create safe version for onclick
+                const safeCode = track.code.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                
+                item.innerHTML = `
+                    <div class="track-history-info">
+                        <div class="track-history-id">Track #${track.id}</div>
+                        <div class="track-history-meta">
+                            <span>📏 ${track.length.toLocaleString()} chars</span>
+                            <span>🔢 ${track.elements.toLocaleString()} elements</span>
+                            <span>🕐 ${timeAgo}</span>
+                        </div>
+                    </div>
+                    <div class="track-history-actions">
+                        <button class="quick-action-btn" onclick='reloadTrack("${track.id}", ${track.id})'>
+                            📋 Copy
+                        </button>
+                        <button class="quick-action-btn download" onclick='quickDownload("${track.id}", ${track.id})'>
+                            💾 Download
+                        </button>
+                    </div>
+                `;
+                
+                listContainer.appendChild(item);
+            });
+        }
+
+        function getTimeAgo(timestamp) {
+            const seconds = Math.floor((Date.now() - timestamp) / 1000);
+            
+            if (seconds < 60) return 'Just now';
+            if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+            if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+            if (seconds < 604800) return `${Math.floor(seconds / 86400)}d ago`;
+            return new Date(timestamp).toLocaleDateString();
+        }
+
+        function reloadTrack(trackId, historyIndex) {
+            const history = JSON.parse(localStorage.getItem('trackHistory') || '[]');
+            const track = history.find(t => t.id === trackId);
+            
+            if (!track) {
+                showNotification('Track not found in history', 'error');
+                return;
+            }
+            
+            fullTrackData = track.code;
+            currentTrackNumber = trackId;
+            document.getElementById('output').value = track.code;
+            displayStats(track.code, trackId);
+            updateStepIndicator(3);
+            showNotification(`Track #${trackId} loaded from history!`, "success");
+            
+            // Scroll to output
+            document.getElementById('output').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function quickDownload(trackId, historyIndex) {
+            const history = JSON.parse(localStorage.getItem('trackHistory') || '[]');
+            const track = history.find(t => t.id === trackId);
+            
+            if (!track) {
+                showNotification('Track not found in history', 'error');
+                return;
+            }
+            
+            const blob = new Blob([track.code], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `frhd-track-${trackId}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showNotification(`Track #${trackId} downloaded!`, "success");
+        }
+
+        function clearHistory() {
+            if (confirm('Are you sure you want to clear all track history?')) {
+                localStorage.removeItem('trackHistory');
+                loadTrackHistory();
+                showNotification('Track history cleared', 'info');
+            }
+        }
+
+        // ========================================
+        // FAVICON ANIMATION
+        // ========================================
+        
+        const faviconStates = {
+            normal: '📥',
+            loading: '⏳',
+            success: '✅',
+            error: '❌'
+        };
+        
+        let faviconElement = null;
+        let faviconAnimationInterval = null;
+        
+        function initFavicon() {
+            faviconElement = document.querySelector('link[rel="icon"]');
+            if (!faviconElement) {
+                faviconElement = document.createElement('link');
+                faviconElement.rel = 'icon';
+                document.head.appendChild(faviconElement);
+            }
+        }
+        
+        function setFavicon(emoji) {
+            if (!faviconElement) initFavicon();
+            
+            const canvas = document.createElement('canvas');
+            canvas.width = 64;
+            canvas.height = 64;
+            const ctx = canvas.getContext('2d');
+            
+            ctx.font = '48px serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(emoji, 32, 32);
+            
+            faviconElement.href = canvas.toDataURL();
+        }
+        
+        function animateFavicon(state) {
+            // Clear any existing animation
+            if (faviconAnimationInterval) {
+                clearInterval(faviconAnimationInterval);
+                faviconAnimationInterval = null;
+            }
+            
+            const emoji = faviconStates[state];
+            
+            if (state === 'loading') {
+                // Animate loading state
+                const loadingEmojis = ['⏳', '⌛'];
+                let index = 0;
+                faviconAnimationInterval = setInterval(() => {
+                    setFavicon(loadingEmojis[index % loadingEmojis.length]);
+                    index++;
+                }, 500);
+            } else if (state === 'success') {
+                // Flash success then return to normal
+                setFavicon(emoji);
+                setTimeout(() => setFavicon(faviconStates.normal), 2000);
+            } else if (state === 'error') {
+                // Flash error then return to normal
+                setFavicon(emoji);
+                setTimeout(() => setFavicon(faviconStates.normal), 2000);
+            } else {
+                setFavicon(emoji);
+            }
+        }
+        
+        // Initialize favicon on load
+        window.addEventListener('load', () => {
+            initFavicon();
+            setFavicon(faviconStates.normal);
         });
 
         async function fetchData() {
@@ -90,6 +329,9 @@
             statsBar.style.display = "none";
             fetchButton.disabled = true;
             fetchButton.style.opacity = "0.6";
+            
+            // Animate favicon to loading state
+            animateFavicon('loading');
 
             try {
                 const response = await fetch("/fetch_data", {
@@ -104,19 +346,36 @@
                 if (result.error) {
                     showNotification(result.error, "error");
                     updateStepIndicator(1);
+                    animateFavicon('error');
                 } else {
                     fullTrackData = result.output;
                     outputField.value = fullTrackData;
                     updateStepIndicator(3);
                     showNotification("Track code retrieved successfully!", "success");
                     
+                    // Animate favicon to success
+                    animateFavicon('success');
+                    
                     // Show stats
                     displayStats(fullTrackData, currentTrackNumber);
+                    
+                    // Save to history
+                    saveToHistory(currentTrackNumber, fullTrackData);
+                    
+                    // Track successful fetch in Google Analytics
+                    if (typeof trackEvent === 'function') {
+                        trackEvent('track_fetched', {
+                            track_id: currentTrackNumber,
+                            track_length: fullTrackData.length,
+                            element_count: (fullTrackData.match(/,/g) || []).length + 1
+                        });
+                    }
                 }
             } catch (error) {
                 console.error("Error fetching data:", error);
                 showNotification("Failed to fetch data. Please try again.", "error");
                 updateStepIndicator(1);
+                animateFavicon('error');
             } finally {
                 loadingBar.style.display = "none";
                 fetchButton.disabled = false;
@@ -147,6 +406,14 @@
                 navigator.clipboard.writeText(fullTrackData).then(() => {
                     showNotification("Track code copied to clipboard!", "success");
                     updateStepIndicator(4);
+                    
+                    // Track copy event in Google Analytics
+                    if (typeof trackEvent === 'function') {
+                        trackEvent('track_copied', {
+                            track_id: currentTrackNumber,
+                            method: 'clipboard_api'
+                        });
+                    }
                 }).catch((err) => {
                     console.error("Clipboard API failed:", err);
                     fallbackCopy();
@@ -178,6 +445,14 @@
                 if (successful) {
                     showNotification("Track code copied to clipboard!", "success");
                     updateStepIndicator(4);
+                    
+                    // Track copy event in Google Analytics
+                    if (typeof trackEvent === 'function') {
+                        trackEvent('track_copied', {
+                            track_id: currentTrackNumber,
+                            method: 'execCommand'
+                        });
+                    }
                 } else {
                     showNotification("Failed to copy. Try selecting the text manually.", "error");
                 }
@@ -205,6 +480,14 @@
             
             showNotification("Track downloaded as file!", "success");
             updateStepIndicator(4);
+            
+            // Track download event in Google Analytics
+            if (typeof trackEvent === 'function') {
+                trackEvent('track_downloaded', {
+                    track_id: currentTrackNumber,
+                    file_name: `frhd-track-${currentTrackNumber}.txt`
+                });
+            }
         }
 
         function clearAll() {
@@ -271,7 +554,7 @@
         }
     </script>
 </head>
-<body>
+<body class="dark-mode">
     
     <div class="container">
         <!-- Floating Particles Background -->
@@ -287,7 +570,7 @@
         </div>
         
         <div class="hero-section">
-            <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Switch to Dark Mode">🌙</button>
+            <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Switch to Light Mode">☀️</button>
             <div class="hero-content">
                 <h1>FreeRiderHD Track Downloader</h1>
                 <!-- <p class="hero-tagline">Extract raw track codes instantly from any FreeRiderHD URL</p> -->
@@ -322,7 +605,10 @@
         
         <button class="button-primary" onclick="fetchData()">Get Track Code</button>
         
-        <div id="loading-bar"></div>
+        <div id="loading-bar">
+            <div class="spinner"></div>
+            <div class="loading-text">Fetching track data...</div>
+        </div>
         
         <!-- Stats Bar -->
         <div class="stats-bar">
@@ -340,6 +626,15 @@
                     <div class="stat-label">Elements</div>
                 </div>
             </div>
+        </div>
+        
+        <!-- Recent Tracks History -->
+        <div class="recent-tracks" id="recent-tracks" style="display: none;">
+            <div class="recent-header">
+                <h3>📜 Recent Tracks</h3>
+                <button class="clear-history-btn" onclick="clearHistory()">Clear History</button>
+            </div>
+            <div id="recent-tracks-list"></div>
         </div>
         
         <!-- Output Textarea -->
