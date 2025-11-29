@@ -27,13 +27,13 @@ By parsing the track ID and fetching JSON data directly from FreeRiderHD’s CDN
    The app constructs a CDN request URL and fetches the JSON track data.
 
 4. **Code Extraction:**
-   The JSON response is parsed to isolate the `code` field, which is displayed to the user.
+   The JSON response is parsed to isolate the `code` field, displayed to the user.
 
 5. **Statistics Display:**
-   Track ID, code length, and element count are calculated and displayed in an elegant stats bar.
+   Track ID, code length, and element count are calculated and displayed as stats bar.
 
 6. **Copy & Download Functions:**
-   Users can either copy the extracted track code directly to the clipboard or download it as a `.txt` file.
+   Users can either copy the extracted track code to clipboard or download it as `.txt` file.
 
 7. **Error Handling:**
    Invalid URLs or failed fetches return clean, user-friendly messages with visual feedback.
