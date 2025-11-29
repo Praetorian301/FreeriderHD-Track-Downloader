@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FreeRider Track Downloader</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/png">
+    
+    <script>
+        let fullTrackData = "";
+        let currentTrackNumber = "";
+
+        // Dark mode toggle
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDark);
+            
+            const toggle = document.querySelector('.dark-mode-toggle');
+            toggle.textContent = isDark ? '☀️' : '🌙';
+            toggle.setAttribute('title', isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode');
+        }
+
+        // Load dark mode preference
+        document.addEventListener('DOMContentLoaded', () => {
+            const darkMode = localStorage.getItem('darkMode') === 'true';
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+                const toggle = document.querySelector('.dark-mode-toggle');
+                toggle.textContent = '☀️';
+                toggle.setAttribute('title', 'Switch to Light Mode');
+            }
+            
+            document.getElementById('freerider-url').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    fetchData();
+                }
+            });
+        });
+
+        async function fetchData() {
+            const url = document.getElementById("freerider-url").value;
+            const outputField = document.getElementById("output");
+            const loadingBar = document.getElementById("loading-bar");
+            const fetchButton = document.querySelector('button[onclick="fetchData()"]');
+
+            if (!url.trim()) {
+                showNotification("Please enter a FreeRider URL", "error");
+                return;
+            }
+
+            // Extract track number
+            const match = url.match(/t\/(\d+)-/);
+            if (!match) {
+                showNotification("Invalid FreeRider URL format", "error");
+                return;
+            }
+            currentTrackNumber = match[1];
+
+            // Show loading state
+            loadingBar.style.display = "block";
+            outputField.value = "";
+            fullTrackData = "";
+            fetchButton.disabled = true;
+            fetchButton.style.opacity = "0.6";
+
+            try {
+                const response = await fetch("/fetch_data", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ url })
+                });
+                const result = await response.json();
+                
+                if (result.error) {
+                    showNotification(result.error, "error");
+                } else {
+                    fullTrackData = result.output;
+                    outputField.value = fullTrackData;
+                    showNotification("Track code retrieved successfully!", "success");
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                showNotification("Failed to fetch data. Please try again.", "error");
+            } finally {
+                loadingBar.style.display = "none";
+                fetchButton.disabled = false;
+                fetchButton.style.opacity = "1";
+            }
+        }
+
+        function copyToClipboard() {
+            if (!fullTrackData || fullTrackData.trim() === "") {
+                showNotification("No track code to copy!", "error");
+                return;
+            }
+            
+            navigator.clipboard.writeText(fullTrackData).then(() => {
+                showNotification("Track code copied to clipboard!", "success");
+            }).catch((err) => {
+                const output = document.getElementById("output");
+                output.select();
+                output.setSelectionRange(0, output.value.length);
+                
+                try {
+                    document.execCommand("copy");
+                    showNotification("Track code copied to clipboard!", "success");
+                } catch (e) {
+                    showNotification("Failed to copy. Try selecting the text manually.", "error");
+                }
+            });
+        }
+
+        function downloadAsFile() {
+            if (!fullTrackData || fullTrackData.trim() === "") {
+                showNotification("No track code to download!", "error");
+                return;
+            }
+            
+            const blob = new Blob([fullTrackData], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `frhd-track-${currentTrackNumber}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showNotification("Track downloaded as file!", "success");
+        }
+
+        function showNotification(message, type) {
+            const existingNotif = document.querySelector('.notification');
+            if (existingNotif) {
+                existingNotif.remove();
+            }
+
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 1rem 1.5rem;
+                background: ${type === 'success' ? 'linear-gradient(135deg, #4ade80, #22c55e)' : 'linear-gradient(135deg, #f87171, #ef4444)'};
+                color: white;
+                border-radius: 12px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                z-index: 1000;
+                font-weight: 600;
+                backdrop-filter: blur(10px);
+                animation: slideInRight 0.3s ease-out;
+                font-size: 1rem;
+                max-width: 400px;
+            `;
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease-out';
+                setTimeout(() => notification.remove(), 300);
+            }, 4000);
+        }
+    </script>
+    
+    <style>
+        @keyframes slideInRight {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Switch to Dark Mode">🌙</button>
+    
+    <div class="container">
+        <h1>FreeRider Track Downloader</h1>
+        
+        <input type="text" id="freerider-url" placeholder="Paste your FreeRider track URL here..." />
+        
+        <button onclick="fetchData()">Get Track Code</button>
+        
+        <div id="loading-bar"></div>
+        
+        <textarea id="output" readonly placeholder="Your track code will appear here..."></textarea>
+        
+        <div class="button-grid">
+            <button onclick="copyToClipboard()">📋 Copy to Clipboard</button>
+            <button onclick="downloadAsFile()">💾 Download as File</button>
+        </div>
+        
+        <footer>
+            <strong>Made by <a href="https://github.com/Praetorian301" target="_blank">@Praetorian</a></strong>
+        </footer>
+    </div>
+</body>
+</html>
