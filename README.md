@@ -178,8 +178,6 @@ Elegant dark theme with enhanced particle visibility and purple accents.
 
 Created by **[@Praetorian301](https://github.com/Praetorian301)**.
 
-**Repository:** [https://github.com/Praetorian301/FreeriderHD-Track-Downloader](https://github.com/Praetorian301/FreeriderHD-Track-Downloader)
-
 ---
 
 ## 📜 License
