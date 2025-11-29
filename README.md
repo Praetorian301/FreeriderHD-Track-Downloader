@@ -110,13 +110,13 @@ Ensure your environment defines the `PORT` variable when deploying.
 **Build Command:**
 
 ```
-`pip install -r requirements.txt`
+pip install -r requirements.txt
 ```
 
 **Start Command:**
 
 ```
-`python app.py`
+python app.py
 ```
 
 ---
