@@ -9,6 +9,10 @@
     
     <style>
         .about-hero {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 1rem;
             text-align: center;
             margin-bottom: 3rem;
             padding: 2rem 0;
@@ -230,7 +234,6 @@
     </style>
 </head>
 <body>
-    <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Switch to Dark Mode">🌙</button>
     
     <div class="container">
         <!-- Floating Particles Background -->
@@ -246,8 +249,11 @@
         </div>
         
         <div class="about-hero">
-            <h1>About This Project</h1>
-            <p class="tagline">Open-source track extraction tool for the FreeRiderHD community</p>
+            <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Switch to Dark Mode">🌙</button>
+            <div class="hero-content">
+                <h1>About This Project</h1>
+                <p class="tagline">Open-source track extraction tool for the FreeRiderHD community</p>
+            </div>
         </div>
 
         <div class="content-card">

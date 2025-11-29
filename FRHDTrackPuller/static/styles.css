@@ -115,7 +115,7 @@ body::after {
 .container {
     width: 90%;
     max-width: none;
-    padding: 2.4rem;
+    padding: 2.2rem;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -127,7 +127,7 @@ body::after {
     animation: fadeIn 0.6s ease-out;
     display: flex;
     flex-direction: column;
-    gap: 1.2rem;
+    gap: 1.1rem;
     text-align: center;
     position: relative;
     z-index: 1;
@@ -150,79 +150,79 @@ body::after {
 .particle {
     position: absolute;
     border-radius: 50%;
-    filter: blur(40px);
-    opacity: 0.15;
+    filter: blur(30px);
+    opacity: 0.25;
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
 }
 
 .particle-1 {
-    width: 200px;
-    height: 200px;
-    background: radial-gradient(circle, rgba(102, 126, 234, 0.8), transparent);
+    width: 220px;
+    height: 220px;
+    background: radial-gradient(circle, rgba(102, 126, 234, 1), transparent);
     top: 10%;
     left: 5%;
     animation: float1 25s infinite;
 }
 
 .particle-2 {
-    width: 150px;
-    height: 150px;
-    background: radial-gradient(circle, rgba(240, 147, 251, 0.8), transparent);
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(circle, rgba(240, 147, 251, 1), transparent);
     top: 60%;
     right: 10%;
     animation: float2 30s infinite;
 }
 
 .particle-3 {
-    width: 180px;
-    height: 180px;
-    background: radial-gradient(circle, rgba(165, 180, 252, 0.8), transparent);
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(165, 180, 252, 1), transparent);
     bottom: 15%;
     left: 15%;
     animation: float3 35s infinite;
 }
 
 .particle-4 {
-    width: 120px;
-    height: 120px;
-    background: radial-gradient(circle, rgba(196, 181, 253, 0.8), transparent);
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(196, 181, 253, 1), transparent);
     top: 40%;
     right: 25%;
     animation: float4 28s infinite;
 }
 
 .particle-5 {
-    width: 160px;
-    height: 160px;
-    background: radial-gradient(circle, rgba(118, 75, 162, 0.6), transparent);
+    width: 190px;
+    height: 190px;
+    background: radial-gradient(circle, rgba(118, 75, 162, 0.9), transparent);
     top: 75%;
     right: 35%;
     animation: float5 32s infinite;
 }
 
 .particle-6 {
-    width: 140px;
-    height: 140px;
-    background: radial-gradient(circle, rgba(102, 126, 234, 0.7), transparent);
+    width: 170px;
+    height: 170px;
+    background: radial-gradient(circle, rgba(102, 126, 234, 1), transparent);
     top: 25%;
     left: 45%;
     animation: float6 27s infinite;
 }
 
 .particle-7 {
-    width: 100px;
-    height: 100px;
-    background: radial-gradient(circle, rgba(240, 147, 251, 0.6), transparent);
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(circle, rgba(240, 147, 251, 0.9), transparent);
     bottom: 35%;
     right: 15%;
     animation: float7 24s infinite;
 }
 
 .particle-8 {
-    width: 130px;
-    height: 130px;
-    background: radial-gradient(circle, rgba(165, 180, 252, 0.7), transparent);
+    width: 160px;
+    height: 160px;
+    background: radial-gradient(circle, rgba(165, 180, 252, 1), transparent);
     bottom: 5%;
     left: 55%;
     animation: float8 29s infinite;
@@ -234,13 +234,13 @@ body::after {
         transform: translate(0, 0) scale(1);
     }
     25% {
-        transform: translate(30px, -40px) scale(1.1);
+        transform: translate(50px, -60px) scale(1.15);
     }
     50% {
-        transform: translate(-20px, -60px) scale(0.9);
+        transform: translate(-30px, -80px) scale(0.85);
     }
     75% {
-        transform: translate(40px, -30px) scale(1.05);
+        transform: translate(60px, -40px) scale(1.08);
     }
 }
 
@@ -249,13 +249,13 @@ body::after {
         transform: translate(0, 0) scale(1);
     }
     25% {
-        transform: translate(-40px, 30px) scale(0.95);
+        transform: translate(-60px, 50px) scale(0.9);
     }
     50% {
-        transform: translate(20px, 50px) scale(1.1);
+        transform: translate(30px, 70px) scale(1.2);
     }
     75% {
-        transform: translate(-30px, 20px) scale(1);
+        transform: translate(-40px, 30px) scale(1.05);
     }
 }
 
@@ -264,10 +264,10 @@ body::after {
         transform: translate(0, 0) scale(1);
     }
     33% {
-        transform: translate(50px, -35px) scale(1.08);
+        transform: translate(70px, -50px) scale(1.12);
     }
     66% {
-        transform: translate(-40px, 40px) scale(0.92);
+        transform: translate(-60px, 60px) scale(0.88);
     }
 }
 
@@ -276,10 +276,10 @@ body::after {
         transform: translate(0, 0) scale(1);
     }
     30% {
-        transform: translate(-35px, -45px) scale(1.12);
+        transform: translate(-50px, -65px) scale(1.18);
     }
     60% {
-        transform: translate(45px, 35px) scale(0.88);
+        transform: translate(65px, 50px) scale(0.82);
     }
 }
 
@@ -288,13 +288,13 @@ body::after {
         transform: translate(0, 0) scale(1);
     }
     25% {
-        transform: translate(25px, 45px) scale(1.05);
+        transform: translate(40px, 65px) scale(1.1);
     }
     50% {
-        transform: translate(-35px, -25px) scale(0.95);
+        transform: translate(-50px, -35px) scale(0.9);
     }
     75% {
-        transform: translate(15px, 30px) scale(1.1);
+        transform: translate(25px, 45px) scale(1.15);
     }
 }
 
@@ -303,10 +303,10 @@ body::after {
         transform: translate(0, 0) scale(1);
     }
     40% {
-        transform: translate(-50px, 40px) scale(1.15);
+        transform: translate(-70px, 60px) scale(1.2);
     }
     80% {
-        transform: translate(30px, -50px) scale(0.9);
+        transform: translate(45px, -70px) scale(0.85);
     }
 }
 
@@ -315,10 +315,10 @@ body::after {
         transform: translate(0, 0) scale(1);
     }
     35% {
-        transform: translate(40px, -30px) scale(1.2);
+        transform: translate(60px, -45px) scale(1.25);
     }
     70% {
-        transform: translate(-25px, 35px) scale(0.85);
+        transform: translate(-35px, 55px) scale(0.8);
     }
 }
 
@@ -327,10 +327,10 @@ body::after {
         transform: translate(0, 0) scale(1);
     }
     30% {
-        transform: translate(-45px, -40px) scale(1.1);
+        transform: translate(-65px, -60px) scale(1.15);
     }
     60% {
-        transform: translate(35px, 45px) scale(0.9);
+        transform: translate(50px, 65px) scale(0.85);
     }
 }
 
@@ -342,34 +342,46 @@ body::after {
 
 /* Heading Styles */
 h1 {
-    font-size: 2.8rem;
+    font-size: 2.6rem;
     font-weight: 800;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.35rem;
     letter-spacing: -1px;
     animation: fadeIn 0.8s ease-out;
 }
 
 /* Hero Section Styles */
 .hero-section {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 1rem;
     text-align: center;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.35rem;
     animation: fadeIn 0.6s ease-out;
+    position: relative;
+}
+
+.hero-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .hero-section h1 {
-    font-size: 2.8rem;
-    margin-bottom: 0.4rem;
+    font-size: 2.6rem;
+    margin-bottom: 0.35rem;
 }
 
 .hero-tagline {
-    font-size: 0.96rem;
+    font-size: 0.9rem;
     color: #667eea;
     font-weight: 600;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.35rem;
     letter-spacing: 0.3px;
 }
 
@@ -381,21 +393,21 @@ body.dark-mode .hero-tagline {
 .step-indicator {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 0.6rem;
-    margin-bottom: 1.6rem;
+    gap: 0.55rem;
+    margin-bottom: 1.4rem;
 }
 
 .step {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
-    padding: 0.8rem 0.6rem;
+    gap: 0.45rem;
+    padding: 0.75rem 0.55rem;
     background: rgba(102, 126, 234, 0.1);
-    border-radius: 13px;
+    border-radius: 12px;
     border: 2px solid rgba(102, 126, 234, 0.2);
     font-weight: 700;
-    font-size: 0.88rem;
+    font-size: 0.85rem;
     transition: all 0.3s ease;
 }
 
@@ -415,12 +427,12 @@ body.dark-mode .step {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     background: rgba(255, 255, 255, 0.3);
     border-radius: 50%;
     font-weight: 800;
-    font-size: 0.96rem;
+    font-size: 0.9rem;
     flex-shrink: 0;
 }
 
@@ -431,31 +443,31 @@ body.dark-mode .step {
 /* Input Section with Icon */
 .input-wrapper {
     position: relative;
-    margin-bottom: 1.2rem;
+    margin-bottom: 1.1rem;
 }
 
 .input-icon {
     position: absolute;
-    left: 1.6rem;
+    left: 1.5rem;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     opacity: 0.6;
     pointer-events: none;
 }
 
 #freerider-url {
-    padding-left: 4rem;
+    padding-left: 3.75rem;
 }
 
 /* Input Styles */
 input[type="text"],
 input[type="input"] {
     width: 100%;
-    padding: 1.6rem;
-    font-size: 1.04rem;
+    padding: 1.5rem;
+    font-size: 0.98rem;
     border: 3px solid rgba(102, 126, 234, 0.3);
-    border-radius: 16px;
+    border-radius: 15px;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.95));
     backdrop-filter: blur(10px);
     color: #1a1a2e;
@@ -490,18 +502,18 @@ input[type="input"]:focus {
 /* Textarea Styles */
 textarea {
     width: 100%;
-    height: 440px;
-    padding: 1.6rem;
-    font-size: 0.92rem;
+    height: 400px;
+    padding: 1.5rem;
+    font-size: 0.87rem;
     font-family: 'Courier New', monospace;
     border: 3px solid rgba(102, 126, 234, 0.3);
-    border-radius: 16px;
+    border-radius: 15px;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.95));
     backdrop-filter: blur(10px);
     color: #1a1a2e;
     resize: vertical;
     transition: all 0.3s ease;
-    line-height: 1.7;
+    line-height: 1.65;
     animation: fadeIn 1.2s ease-out;
     box-shadow: 
         0 8px 32px rgba(102, 126, 234, 0.12),
@@ -528,17 +540,17 @@ textarea:focus {
 /* Button Styles */
 button {
     width: 100%;
-    padding: 1.6rem;
-    font-size: 1.04rem;
+    padding: 1.5rem;
+    font-size: 0.98rem;
     font-weight: 700;
     color: #ffffff;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border: none;
-    border-radius: 16px;
+    border-radius: 15px;
     cursor: pointer;
     transition: all 0.3s ease;
     text-transform: uppercase;
-    letter-spacing: 1.2px;
+    letter-spacing: 1px;
     box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
     position: relative;
     overflow: hidden;
@@ -671,10 +683,10 @@ body.dark-mode .button-primary {
 /* Stats Display */
 .stats-bar {
     display: none;
-    padding: 0.8rem;
+    padding: 0.75rem;
     background: rgba(102, 126, 234, 0.1);
     border-radius: 10px;
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.75rem;
     border: 2px solid rgba(102, 126, 234, 0.2);
     animation: fadeIn 0.5s ease-out;
 }
@@ -686,17 +698,17 @@ body.dark-mode .stats-bar {
 
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 0.8rem;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 0.75rem;
     text-align: center;
 }
 
 .stat-item {
-    padding: 0.4rem;
+    padding: 0.35rem;
 }
 
 .stat-value {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 800;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     -webkit-background-clip: text;
@@ -712,9 +724,9 @@ body.dark-mode .stat-value {
 }
 
 .stat-label {
-    font-size: 0.72rem;
+    font-size: 0.68rem;
     color: #666;
-    margin-top: 0.2rem;
+    margin-top: 0.18rem;
 }
 
 body.dark-mode .stat-label {
@@ -771,16 +783,18 @@ body.dark-mode .tips-section {
 
 /* Dark Mode Toggle */
 .dark-mode-toggle {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    font-size: 2rem;
+    position: relative;
+    top: 0;
+    right: 0;
+    font-size: 1.8rem;
     background: rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(10px);
     border: 3px solid rgba(102, 126, 234, 0.5);
     border-radius: 50%;
-    width: 65px;
-    height: 65px;
+    width: 55px;
+    height: 55px;
+    min-width: 55px;
+    min-height: 55px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -791,6 +805,7 @@ body.dark-mode .tips-section {
     animation: pulse 3s ease-in-out infinite;
     line-height: 1;
     padding: 0;
+    flex-shrink: 0;
 }
 
 .dark-mode-toggle:hover {
@@ -823,31 +838,32 @@ body.dark-mode .container {
 
 /* Dark mode particles - slightly more visible */
 body.dark-mode .particle {
-    opacity: 0.2;
+    opacity: 0.3;
+    filter: blur(25px);
 }
 
 body.dark-mode .particle-1 {
-    background: radial-gradient(circle, rgba(165, 180, 252, 0.9), transparent);
+    background: radial-gradient(circle, rgba(165, 180, 252, 1), transparent);
 }
 
 body.dark-mode .particle-2 {
-    background: radial-gradient(circle, rgba(240, 147, 251, 0.9), transparent);
+    background: radial-gradient(circle, rgba(240, 147, 251, 1), transparent);
 }
 
 body.dark-mode .particle-3 {
-    background: radial-gradient(circle, rgba(196, 181, 253, 0.9), transparent);
+    background: radial-gradient(circle, rgba(196, 181, 253, 1), transparent);
 }
 
 body.dark-mode .particle-5 {
-    background: radial-gradient(circle, rgba(165, 180, 252, 0.8), transparent);
+    background: radial-gradient(circle, rgba(165, 180, 252, 1), transparent);
 }
 
 body.dark-mode .particle-6 {
-    background: radial-gradient(circle, rgba(165, 180, 252, 0.9), transparent);
+    background: radial-gradient(circle, rgba(165, 180, 252, 1), transparent);
 }
 
 body.dark-mode .particle-8 {
-    background: radial-gradient(circle, rgba(196, 181, 253, 0.9), transparent);
+    background: radial-gradient(circle, rgba(196, 181, 253, 1), transparent);
 }
 
 /* CRITICAL: Ensure all button text is white in dark mode */
@@ -934,7 +950,7 @@ body.dark-mode footer a {
 .button-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0.8rem;
+    gap: 0.75rem;
 }
 
 .button-grid button {
@@ -943,8 +959,8 @@ body.dark-mode footer a {
 
 /* Footer */
 footer {
-    margin-top: 1.2rem;
-    font-size: 0.96rem;
+    margin-top: 1.1rem;
+    font-size: 0.9rem;
     color: #555;
     animation: fadeIn 1.3s ease-out;
 }
@@ -955,7 +971,7 @@ footer strong {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     font-weight: 700;
-    font-size: 1.04rem;
+    font-size: 0.98rem;
 }
 
 footer a {
@@ -979,7 +995,7 @@ footer a:hover {
 }
 
 footer a strong {
-    font-size: 1.04rem;
+    font-size: 0.98rem;
     font-weight: 800;
 }
 
@@ -1331,10 +1347,20 @@ body.dark-mode .cta-section {
         font-size: 1.75rem;
     }
     
+    .hero-section,
+    .about-hero {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+    }
+    
     .dark-mode-toggle {
-        width: 55px;
-        height: 55px;
-        font-size: 1.6rem;
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
     }
     
     .stats-grid {
@@ -1782,4 +1808,3 @@ body.dark-mode .modal-btn.btn-download:hover {
         gap: 0.5rem;
     }
 }
-
