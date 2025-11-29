@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>About – FreeRider Track Downloader</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/png">
+    
+    <style>
+        .about-hero {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+        }
+        
+        .about-hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .about-hero .tagline {
+            font-size: 1.3rem;
+            color: #667eea;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        body.dark-mode .about-hero .tagline {
+            color: #f093fb;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
+        
+        .content-card {
+            background: rgba(255, 255, 255, 0.5);
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.2);
+            border-color: rgba(102, 126, 234, 0.4);
+        }
+        
+        body.dark-mode .content-card {
+            background: rgba(30, 30, 46, 0.5);
+            border-color: rgba(240, 147, 251, 0.2);
+        }
+        
+        body.dark-mode .content-card:hover {
+            border-color: rgba(240, 147, 251, 0.4);
+            box-shadow: 0 12px 30px rgba(240, 147, 251, 0.2);
+        }
+        
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .content-card h2 {
+            margin: 0 0 1rem 0;
+            font-size: 1.8rem;
+        }
+        
+        .content-card p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #333;
+            margin: 0;
+        }
+        
+        body.dark-mode .content-card p {
+            color: #e0e0e0;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .feature-item {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        body.dark-mode .feature-item {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(240, 147, 251, 0.15));
+            border-color: rgba(240, 147, 251, 0.2);
+        }
+        
+        .feature-item h3 {
+            font-size: 1.3rem;
+            margin: 0 0 0.5rem 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .feature-item p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #555;
+            margin: 0;
+        }
+        
+        body.dark-mode .feature-item p {
+            color: #b0b0b0;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .badge-active {
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            color: white;
+        }
+        
+        .badge-planned {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: white;
+        }
+        
+        .tech-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .tech-badge {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .tech-badge:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.5);
+        }
+        
+        .cta-section {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2.5rem;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(240, 147, 251, 0.15));
+            border-radius: 20px;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+        }
+        
+        body.dark-mode .cta-section {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(240, 147, 251, 0.2));
+            border-color: rgba(240, 147, 251, 0.3);
+        }
+        
+        .cta-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            margin: 1rem 0.5rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.5);
+        }
+        
+        @media (max-width: 768px) {
+            .about-hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .about-hero .tagline {
+                font-size: 1.1rem;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tech-list {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Switch to Dark Mode">🌙</button>
+    
+    <div class="container">
+        <!-- Floating Particles Background -->
+        <div class="particles">
+            <div class="particle particle-1"></div>
+            <div class="particle particle-2"></div>
+            <div class="particle particle-3"></div>
+            <div class="particle particle-4"></div>
+            <div class="particle particle-5"></div>
+            <div class="particle particle-6"></div>
+            <div class="particle particle-7"></div>
+            <div class="particle particle-8"></div>
+        </div>
+        
+        <div class="about-hero">
+            <h1>About This Project</h1>
+            <p class="tagline">Open-source track extraction tool for the FreeRiderHD community</p>
+        </div>
+
+        <div class="content-card">
+            <span class="card-icon">🚀</span>
+            <h2>Development Roadmap</h2>
+            <div style="margin-top: 1.5rem; text-align: left;">
+                <div style="margin-bottom: 1rem;">
+                    <span class="status-badge badge-active">✓ COMPLETE</span>
+                    <span style="font-size: 1.1rem; font-weight: 600;">Full local hosting with CSS, images, and dark mode</span>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <span class="status-badge badge-planned">⧗ PLANNED</span>
+                    <span style="font-size: 1.1rem; font-weight: 600;">Migrate to private always-on server</span>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <span class="status-badge badge-planned">⧗ PLANNED</span>
+                    <span style="font-size: 1.1rem; font-weight: 600;">Security hardening & abuse protection</span>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <span class="status-badge badge-planned">⧗ PLANNED</span>
+                    <span style="font-size: 1.1rem; font-weight: 600;">Public API endpoint for developers</span>
+                </div>
+                <div>
+                    <span class="status-badge badge-planned">⧗ PLANNED</span>
+                    <span style="font-size: 1.1rem; font-weight: 600;">Track statistics & metadata analysis</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card">
+            <span class="card-icon">🛠</span>
+            <h2>Technology Stack</h2>
+            <div class="tech-list">
+                <span class="tech-badge">Python</span>
+                <span class="tech-badge">Flask</span>
+                <span class="tech-badge">HTML5</span>
+                <span class="tech-badge">CSS3</span>
+                <span class="tech-badge">JavaScript</span>
+                <span class="tech-badge">REST API</span>
+            </div>
+        </div>
+
+        <div class="content-card">
+            <span class="card-icon">💡</span>
+            <h2>Future Features</h2>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <h3>🖼 Visual Preview</h3>
+                    <p>See track layouts rendered before download</p>
+                </div>
+                <div class="feature-item">
+                    <h3>✓ Code Validator</h3>
+                    <p>Verify track code integrity and syntax</p>
+                </div>
+                <div class="feature-item">
+                    <h3>📦 Bulk Download</h3>
+                    <p>Download multiple tracks at once</p>
+                </div>
+                <div class="feature-item">
+                    <h3>🔍 Track Comparison</h3>
+                    <p>Diff tool for comparing track versions</p>
+                </div>
+                <div class="feature-item">
+                    <h3>🗄 Track Vault</h3>
+                    <p>Personal cloud storage for your tracks</p>
+                </div>
+                <div class="feature-item">
+                    <h3>📊 Analytics</h3>
+                    <p>Track complexity and statistics analysis</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2>Ready to Extract Tracks?</h2>
+            <p style="font-size: 1.15rem; margin-bottom: 1.5rem;">Start downloading FreeRiderHD tracks now or check out the code on GitHub</p>
+            <a href="/" class="cta-button">⬅ Back to Downloader</a>
+            <a href="https://github.com/Praetorian301" target="_blank" class="cta-button">🔗 View on GitHub</a>
+        </div>
+
+        <footer>
+            <strong>
+                Made by 
+                <a href="https://github.com/Praetorian301" target="_blank">@Praetorian</a>
+                · <a href="/">Home</a>
+                · <a href="/popular">Popular Tracks</a>
+            </strong>
+        </footer>
+    </div>
+
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDark);
+
+            const toggle = document.querySelector('.dark-mode-toggle');
+            toggle.textContent = isDark ? '☀️' : '🌙';
+            toggle.setAttribute('title', isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const darkMode = localStorage.getItem('darkMode') === 'true';
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+                const toggle = document.querySelector('.dark-mode-toggle');
+                toggle.textContent = '☀️';
+                toggle.setAttribute('title', 'Switch to Light Mode');
+            }
+        });
+    </script>
+</body>
+</html>

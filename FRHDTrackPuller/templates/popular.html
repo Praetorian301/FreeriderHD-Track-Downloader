@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Popular Tracks - FreeRider Track Downloader</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/png">
+    
+    <script>
+        // Dark mode toggle
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDark);
+            
+            const toggle = document.querySelector('.dark-mode-toggle');
+            toggle.textContent = isDark ? '☀️' : '🌙';
+            toggle.setAttribute('title', isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode');
+        }
+
+        // Load dark mode preference
+        document.addEventListener('DOMContentLoaded', () => {
+            const darkMode = localStorage.getItem('darkMode') === 'true';
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+                const toggle = document.querySelector('.dark-mode-toggle');
+                toggle.textContent = '☀️';
+                toggle.setAttribute('title', 'Switch to Light Mode');
+            }
+        });
+
+        // Quick copy track code to clipboard
+        async function quickCopyTrack(trackId, trackName, button) {
+            button.disabled = true;
+            button.textContent = '⏳ Loading...';
+            
+            try {
+                const response = await fetch("/fetch_data", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ 
+                        url: `https://www.freeriderhd.com/t/${trackId}-${trackName}` 
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.error) {
+                    showNotification(result.error, "error");
+                    button.textContent = '📋 Quick Copy';
+                } else {
+                    await navigator.clipboard.writeText(result.output);
+                    showNotification(`"${trackName}" copied to clipboard!`, "success");
+                    button.textContent = '✓ Copied!';
+                    setTimeout(() => {
+                        button.textContent = '📋 Quick Copy';
+                    }, 2000);
+                }
+            } catch (error) {
+                showNotification("Failed to copy track code", "error");
+                button.textContent = '📋 Quick Copy';
+            } finally {
+                button.disabled = false;
+            }
+        }
+
+        // Download track as file
+        async function downloadTrack(trackId, trackName, button) {
+            button.disabled = true;
+            button.textContent = '⏳ Downloading...';
+            
+            try {
+                const response = await fetch("/fetch_data", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ 
+                        url: `https://www.freeriderhd.com/t/${trackId}-${trackName}` 
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.error) {
+                    showNotification(result.error, "error");
+                } else {
+                    const blob = new Blob([result.output], { type: 'text/plain' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `frhd-track-${trackId}.txt`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    
+                    showNotification(`"${trackName}" downloaded!`, "success");
+                }
+            } catch (error) {
+                showNotification("Failed to download track", "error");
+            } finally {
+                button.disabled = false;
+                button.textContent = '💾 Download';
+            }
+        }
+
+        // Show track details modal
+        function showTrackDetails(trackId, trackName, author, plays, rating) {
+            const modal = document.getElementById('track-modal');
+            document.getElementById('modal-track-name').textContent = trackName;
+            document.getElementById('modal-track-id').textContent = trackId;
+            document.getElementById('modal-author').textContent = author;
+            document.getElementById('modal-plays').textContent = plays.toLocaleString();
+            document.getElementById('modal-rating').textContent = rating;
+            document.getElementById('modal-url').textContent = `https://www.freeriderhd.com/t/${trackId}-${trackName}`;
+            
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('track-modal').style.display = 'none';
+        }
+
+        // Notification system
+        function showNotification(message, type) {
+            const existingNotif = document.querySelector('.notification');
+            if (existingNotif) {
+                existingNotif.remove();
+            }
+
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            
+            const iconMap = {
+                'success': '✓',
+                'error': '✕',
+                'info': 'ℹ'
+            };
+            
+            const colorMap = {
+                'success': 'linear-gradient(135deg, #4ade80, #22c55e)',
+                'error': 'linear-gradient(135deg, #f87171, #ef4444)',
+                'info': 'linear-gradient(135deg, #60a5fa, #3b82f6)'
+            };
+            
+            notification.innerHTML = `
+                <span style="font-size: 1.3rem; margin-right: 0.5rem;">${iconMap[type]}</span>
+                <span>${message}</span>
+            `;
+            
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 1rem 1.5rem;
+                background: ${colorMap[type]};
+                color: white;
+                border-radius: 12px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                z-index: 10000;
+                font-weight: 600;
+                backdrop-filter: blur(10px);
+                animation: slideInRight 0.3s ease-out;
+                font-size: 1rem;
+                max-width: 400px;
+                display: flex;
+                align-items: center;
+            `;
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease-out';
+                setTimeout(() => notification.remove(), 300);
+            }, 4000);
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('track-modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+</head>
+<body>
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Switch to Dark Mode">🌙</button>
+    
+    <div class="container">
+        <!-- Floating Particles Background -->
+        <div class="particles">
+            <div class="particle particle-1"></div>
+            <div class="particle particle-2"></div>
+            <div class="particle particle-3"></div>
+            <div class="particle particle-4"></div>
+            <div class="particle particle-5"></div>
+            <div class="particle particle-6"></div>
+            <div class="particle particle-7"></div>
+            <div class="particle particle-8"></div>
+        </div>
+        
+        <div class="hero-section">
+            <h1>Popular Tracks</h1>
+            <p class="hero-tagline">Browse and download the most popular FreeRiderHD tracks</p>
+        </div>
+
+        <!-- Track Grid -->
+        <div class="track-grid">
+            <!-- Track Card 1 -->
+            <div class="track-card">
+                <div class="track-thumbnail">
+                    <svg width="100%" height="100%" viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="400" height="250" fill="#e8eaf6"/>
+                        <path d="M 20 200 L 80 150 L 140 180 L 200 120 L 260 160 L 320 100 L 380 140" stroke="#3f51b5" stroke-width="4" fill="none"/>
+                        <circle cx="80" cy="150" r="8" fill="#ff5722"/>
+                        <circle cx="200" cy="120" r="8" fill="#ff5722"/>
+                        <circle cx="320" cy="100" r="8" fill="#4caf50"/>
+                        <text x="200" y="230" font-family="Arial" font-size="16" fill="#3f51b5" text-anchor="middle" font-weight="bold">Epic Mountain Run</text>
+                    </svg>
+                    <div class="track-overlay">
+                        <button class="overlay-button" onclick="showTrackDetails('123456', 'Epic Mountain Run', 'RiderPro', 45821, '4.8')">
+                            👁️ View Details
+                        </button>
+                    </div>
+                </div>
+                <div class="track-info">
+                    <h3 class="track-title">Epic Mountain Run</h3>
+                    <p class="track-author">by RiderPro</p>
+                    <div class="track-stats">
+                        <span>▶️ 45.8K plays</span>
+                        <span>⭐ 4.8</span>
+                    </div>
+                    <div class="track-actions">
+                        <button class="track-btn btn-copy" onclick="quickCopyTrack('123456', 'epic-mountain-run', this)">
+                            📋 Quick Copy
+                        </button>
+                        <button class="track-btn btn-download" onclick="downloadTrack('123456', 'epic-mountain-run', this)">
+                            💾 Download
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Track Card 2 -->
+            <div class="track-card">
+                <div class="track-thumbnail">
+                    <svg width="100%" height="100%" viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="400" height="250" fill="#f3e5f5"/>
+                        <path d="M 20 180 L 100 180 L 120 140 L 140 180 L 240 180 L 260 120 L 280 180 L 380 180" stroke="#7b1fa2" stroke-width="4" fill="none"/>
+                        <circle cx="120" cy="140" r="8" fill="#ff5722"/>
+                        <circle cx="260" cy="120" r="8" fill="#4caf50"/>
+                        <text x="200" y="230" font-family="Arial" font-size="16" fill="#7b1fa2" text-anchor="middle" font-weight="bold">Speed Challenge</text>
+                    </svg>
+                    <div class="track-overlay">
+                        <button class="overlay-button" onclick="showTrackDetails('234567', 'Speed Challenge', 'FastRider', 38492, '4.6')">
+                            👁️ View Details
+                        </button>
+                    </div>
+                </div>
+                <div class="track-info">
+                    <h3 class="track-title">Speed Challenge</h3>
+                    <p class="track-author">by FastRider</p>
+                    <div class="track-stats">
+                        <span>▶️ 38.4K plays</span>
+                        <span>⭐ 4.6</span>
+                    </div>
+                    <div class="track-actions">
+                        <button class="track-btn btn-copy" onclick="quickCopyTrack('234567', 'speed-challenge', this)">
+                            📋 Quick Copy
+                        </button>
+                        <button class="track-btn btn-download" onclick="downloadTrack('234567', 'speed-challenge', this)">
+                            💾 Download
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Track Card 3 -->
+            <div class="track-card">
+                <div class="track-thumbnail">
+                    <svg width="100%" height="100%" viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="400" height="250" fill="#fce4ec"/>
+                        <path d="M 20 200 L 120 200 Q 140 100 160 200 L 240 200 Q 260 80 280 200 L 380 200" stroke="#c2185b" stroke-width="4" fill="none"/>
+                        <circle cx="140" cy="150" r="30" stroke="#c2185b" stroke-width="3" fill="none"/>
+                        <circle cx="260" cy="140" r="35" stroke="#c2185b" stroke-width="3" fill="none"/>
+                        <circle cx="160" cy="200" r="8" fill="#4caf50"/>
+                        <text x="200" y="230" font-family="Arial" font-size="16" fill="#c2185b" text-anchor="middle" font-weight="bold">Gravity Master</text>
+                    </svg>
+                    <div class="track-overlay">
+                        <button class="overlay-button" onclick="showTrackDetails('345678', 'Gravity Master', 'ProBuilder', 52103, '4.9')">
+                            👁️ View Details
+                        </button>
+                    </div>
+                </div>
+                <div class="track-info">
+                    <h3 class="track-title">Gravity Master</h3>
+                    <p class="track-author">by ProBuilder</p>
+                    <div class="track-stats">
+                        <span>▶️ 52.1K plays</span>
+                        <span>⭐ 4.9</span>
+                    </div>
+                    <div class="track-actions">
+                        <button class="track-btn btn-copy" onclick="quickCopyTrack('345678', 'gravity-master', this)">
+                            📋 Quick Copy
+                        </button>
+                        <button class="track-btn btn-download" onclick="downloadTrack('345678', 'gravity-master', this)">
+                            💾 Download
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Track Card 4 -->
+            <div class="track-card">
+                <div class="track-thumbnail">
+                    <svg width="100%" height="100%" viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="400" height="250" fill="#e1f5fe"/>
+                        <circle cx="120" cy="125" r="40" stroke="#0277bd" stroke-width="4" fill="none"/>
+                        <circle cx="280" cy="125" r="40" stroke="#0277bd" stroke-width="4" fill="none"/>
+                        <path d="M 20 165 L 80 165 L 160 165 L 240 165 L 320 165 L 380 165" stroke="#0277bd" stroke-width="4" fill="none"/>
+                        <circle cx="120" cy="85" r="8" fill="#ff5722"/>
+                        <circle cx="280" cy="85" r="8" fill="#4caf50"/>
+                        <text x="200" y="230" font-family="Arial" font-size="16" fill="#0277bd" text-anchor="middle" font-weight="bold">Loop Paradise</text>
+                    </svg>
+                    <div class="track-overlay">
+                        <button class="overlay-button" onclick="showTrackDetails('456789', 'Loop Paradise', 'LoopMaster', 41265, '4.7')">
+                            👁️ View Details
+                        </button>
+                    </div>
+                </div>
+                <div class="track-info">
+                    <h3 class="track-title">Loop Paradise</h3>
+                    <p class="track-author">by LoopMaster</p>
+                    <div class="track-stats">
+                        <span>▶️ 41.2K plays</span>
+                        <span>⭐ 4.7</span>
+                    </div>
+                    <div class="track-actions">
+                        <button class="track-btn btn-copy" onclick="quickCopyTrack('456789', 'loop-paradise', this)">
+                            📋 Quick Copy
+                        </button>
+                        <button class="track-btn btn-download" onclick="downloadTrack('456789', 'loop-paradise', this)">
+                            💾 Download
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Track Card 5 -->
+            <div class="track-card">
+                <div class="track-thumbnail">
+                    <svg width="100%" height="100%" viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="400" height="250" fill="#fff3e0"/>
+                        <path d="M 20 200 L 60 200 L 60 120 L 100 120 L 100 200 L 140 200 L 140 100 L 180 100 L 180 200 L 220 200 L 220 140 L 260 140 L 260 200 L 380 200" stroke="#f57c00" stroke-width="4" fill="none"/>
+                        <circle cx="60" cy="120" r="8" fill="#ff5722"/>
+                        <circle cx="140" cy="100" r="8" fill="#ff5722"/>
+                        <circle cx="260" cy="200" r="8" fill="#4caf50"/>
+                        <text x="200" y="230" font-family="Arial" font-size="16" fill="#f57c00" text-anchor="middle" font-weight="bold">Precision Test</text>
+                    </svg>
+                    <div class="track-overlay">
+                        <button class="overlay-button" onclick="showTrackDetails('567890', 'Precision Test', 'AccuracyKing', 29847, '4.5')">
+                            👁️ View Details
+                        </button>
+                    </div>
+                </div>
+                <div class="track-info">
+                    <h3 class="track-title">Precision Test</h3>
+                    <p class="track-author">by AccuracyKing</p>
+                    <div class="track-stats">
+                        <span>▶️ 29.8K plays</span>
+                        <span>⭐ 4.5</span>
+                    </div>
+                    <div class="track-actions">
+                        <button class="track-btn btn-copy" onclick="quickCopyTrack('567890', 'precision-test', this)">
+                            📋 Quick Copy
+                        </button>
+                        <button class="track-btn btn-download" onclick="downloadTrack('567890', 'precision-test', this)">
+                            💾 Download
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Track Card 6 -->
+            <div class="track-card">
+                <div class="track-thumbnail">
+                    <svg width="100%" height="100%" viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="400" height="250" fill="#e8f5e9"/>
+                        <path d="M 20 200 L 80 140 L 140 160 L 200 100 L 260 130 L 320 80 L 350 110 L 380 90" stroke="#2e7d32" stroke-width="4" fill="none"/>
+                        <path d="M 100 170 Q 150 150 200 170" stroke="#2e7d32" stroke-width="3" fill="none" stroke-dasharray="5,5"/>
+                        <circle cx="200" cy="100" r="8" fill="#ff5722"/>
+                        <circle cx="320" cy="80" r="8" fill="#4caf50"/>
+                        <text x="200" y="230" font-family="Arial" font-size="16" fill="#2e7d32" text-anchor="middle" font-weight="bold">Canyon Drift</text>
+                    </svg>
+                    <div class="track-overlay">
+                        <button class="overlay-button" onclick="showTrackDetails('678901', 'Canyon Drift', 'DriftKing', 36512, '4.8')">
+                            👁️ View Details
+                        </button>
+                    </div>
+                </div>
+                <div class="track-info">
+                    <h3 class="track-title">Canyon Drift</h3>
+                    <p class="track-author">by DriftKing</p>
+                    <div class="track-stats">
+                        <span>▶️ 36.5K plays</span>
+                        <span>⭐ 4.8</span>
+                    </div>
+                    <div class="track-actions">
+                        <button class="track-btn btn-copy" onclick="quickCopyTrack('678901', 'canyon-drift', this)">
+                            📋 Quick Copy
+                        </button>
+                        <button class="track-btn btn-download" onclick="downloadTrack('678901', 'canyon-drift', this)">
+                            💾 Download
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <strong>
+                Made by 
+                <a href="https://github.com/Praetorian301" target="_blank"><strong>@Praetorian</strong></a>
+                ·
+                <a href="/"><strong>Home</strong></a>
+                ·
+                <a href="/about"><strong>About</strong></a>
+            </strong>
+        </footer>
+    </div>
+
+    <!-- Track Details Modal -->
+    <div id="track-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <h2 id="modal-track-name">Track Name</h2>
+            <div class="modal-info">
+                <div class="modal-row">
+                    <strong>Track ID:</strong>
+                    <span id="modal-track-id">-</span>
+                </div>
+                <div class="modal-row">
+                    <strong>Author:</strong>
+                    <span id="modal-author">-</span>
+                </div>
+                <div class="modal-row">
+                    <strong>Plays:</strong>
+                    <span id="modal-plays">-</span>
+                </div>
+                <div class="modal-row">
+                    <strong>Rating:</strong>
+                    <span id="modal-rating">-</span>
+                </div>
+                <div class="modal-row">
+                    <strong>URL:</strong>
+                    <span id="modal-url" style="word-break: break-all;">-</span>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn btn-copy" onclick="quickCopyTrack(document.getElementById('modal-track-id').textContent, document.getElementById('modal-track-name').textContent, this)">
+                    📋 Copy to Clipboard
+                </button>
+                <button class="modal-btn btn-download" onclick="downloadTrack(document.getElementById('modal-track-id').textContent, document.getElementById('modal-track-name').textContent, this)">
+                    💾 Download as File
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
