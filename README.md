@@ -18,7 +18,7 @@ By parsing the track ID and fetching JSON data directly from FreeRiderHD’s CDN
 ## ⚙️ How it works
 
 1. **User Input:**
-   The web interface accepts a FreeRiderHD track URL via a glass-morphism styled input field.
+   The web interface accepts a FreeRiderHD track URL via a paste friendly input field.
 
 2. **Track Number Extraction:**
    The backend isolates the track number using a regular expression (`t/(\d+)-`).
@@ -119,7 +119,7 @@ https://www.freeriderhd.com/t/123456-sample-track
 **Output:**
 
 ```
-{ "code": "AAAAABBBBCCCC..." }
+{ "code": "1i 11 1i,-d 1i 3 1j g 1i,10 1i..." }
 ```
 
 ---
@@ -195,22 +195,6 @@ Elegant dark theme with enhanced particle visibility and purple accents.
 
 ---
 
-## 🔄 Recent Updates
-
-### v2.0 - Major UI Overhaul
-
-* ✨ Added 8 animated floating particle orbs with gradient backgrounds
-* 🎨 Implemented glass-morphism design with backdrop blur effects
-* 🌓 Repositioned dark mode toggle to align with page title
-* 📏 Optimized all UI elements to 110% scale for better readability
-* 🎯 Enhanced input/textarea styling with gradient backgrounds
-* 🔧 Fixed copy-to-clipboard function with iOS/mobile support
-* 📱 Improved responsive design with mobile-first approach
-* 🎭 Added Popular Tracks page with custom SVG previews
-* 📄 Created About page with project roadmap
-
----
-
 ## 👨‍💻 Credits & Contact
 
 Created by **[@Praetorian301](https://github.com/Praetorian301)**.
@@ -221,6 +205,6 @@ Created by **[@Praetorian301](https://github.com/Praetorian301)**.
 
 ## 📜 License
 
-Open Source — feel free to fork, modify, and use for personal projects.
+Open Source, feel free to fork, modify, and use for personal projects.
 
 ---
