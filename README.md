@@ -1,9 +1,7 @@
 # FreeriderHD Track Downloader Website
 
 ## 🚀 Live Site: [https://freeriderhd-track-downloader.onrender.com](https://freeriderhd-track-downloader.onrender.com)
-
-*(It may take a few minutes to load from a cold spin-up.)*
-
+### Website takes a minute to load each session, the grey loading screen is normal.
 A streamlined open-source Flask web application designed to help FreeRiderHD players efficiently retrieve, view, and copy raw track codes directly from any FreeRiderHD track URL. Simply paste a track link, and the app extracts the unique track code from FreeRiderHD's CDN, allowing you to easily back up, edit, or share your track data.
 
 ---
